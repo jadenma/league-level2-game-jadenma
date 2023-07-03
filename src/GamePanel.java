@@ -15,6 +15,8 @@ public class GamePanel extends JPanel implements KeyListener {
 	
 	Font titleFont = new Font("Arial", Font.PLAIN, 48);
     Font subtitleFont = new Font("Arial", Font.PLAIN, 24);
+    Tank tank = new Tank(175, 225, 50, 50);
+    Tank2 tank2 = new Tank2(575, 225, 50, 50);
 	
 	@Override
 	public void paintComponent(Graphics g){
@@ -42,6 +44,10 @@ public class GamePanel extends JPanel implements KeyListener {
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Main.HEIGHT, Main.LENGTH);
+		g.setColor(Color.WHITE);
+		g.drawLine(400, 0, 400, 500);
+		tank.draw(g);
+		tank2.draw(g);
 	}
 	void drawEndState(Graphics g)  {
 		g.setColor(Color.RED);
@@ -64,33 +70,33 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 		if (currentState==MENU) {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-					JOptionPane.showMessageDialog(null, "Instructions");
+					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a rocket using either the arrow keys or wasd, and they try to kill the other player's tank by shooting it down while dodging their shots. You cannot cross the center line");
 			}
 		}
 		if (currentState==GAME) {
 			if (e.getKeyCode()==KeyEvent.VK_UP) {
-				
+				tank2.up();
 			}
 			if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-				
+				tank2.down();
 			}			
 			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-				
+				tank2.left();
 			}			
 			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-				
+				tank2.right();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_W) {
-				
+				tank.up();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_A) {
-				
+				tank.left();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_S) {
-				
+				tank.down();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_D) {
-				
+				tank.right();
 			}
 		}
 		repaint();
