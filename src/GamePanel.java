@@ -17,6 +17,7 @@ public class GamePanel extends JPanel implements KeyListener {
     Font subtitleFont = new Font("Arial", Font.PLAIN, 24);
     Tank tank = new Tank(175, 225, 50, 50);
     Tank2 tank2 = new Tank2(575, 225, 50, 50);
+    ObjectManager objectmanager = new ObjectManager(tank, tank2);
 	
 	@Override
 	public void paintComponent(Graphics g){
@@ -30,6 +31,9 @@ public class GamePanel extends JPanel implements KeyListener {
 		    drawEndState(g);
 		}
 		System.out.println(currentState);
+	}
+	void updateGameState() {
+		objectmanager.update();
 	}
 	void drawMenuState(Graphics g) {
 		g.setColor(Color.BLUE);
@@ -46,9 +50,7 @@ public class GamePanel extends JPanel implements KeyListener {
 		g.fillRect(0, 0, Main.HEIGHT, Main.LENGTH);
 		g.setColor(Color.WHITE);
 		g.drawLine(400, 0, 400, 500);
-		tank.draw(g);
-		tank2.draw(g);
-		
+		objectmanager.draw(g);
 	}
 	void drawEndState(Graphics g)  {
 		g.setColor(Color.RED);
@@ -113,8 +115,8 @@ public class GamePanel extends JPanel implements KeyListener {
 				tank.left();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_S) {
-				if (tank2.y>450) {
-					tank2.y=450;
+				if (tank.y>450) {
+					tank.y=450;
 				}
 				tank.down();
 			}
@@ -124,7 +126,12 @@ public class GamePanel extends JPanel implements KeyListener {
 				}
 				tank.right();
 			}
-			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				
+			}
+			
+			if (e.getKeyCode() == KeyEvent.VK_0) {
 				
 			}
 		}
