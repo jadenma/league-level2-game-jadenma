@@ -4,8 +4,8 @@ public class Main {
 
 	JFrame frame;
 	GamePanel panel;
-	public static final int HEIGHT = 800;
-	public static final int LENGTH = 500;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 500;
 	
 	public Main() {
 		frame = new JFrame();
@@ -14,7 +14,7 @@ public class Main {
 	
 	void setup() {
 		frame.add(panel);
-		frame.setSize(HEIGHT, LENGTH);
+		frame.setSize(WIDTH, HEIGHT);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addKeyListener(panel);

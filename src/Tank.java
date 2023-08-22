@@ -16,7 +16,7 @@ public class Tank extends GameObject{
 		speed=10;
 		// TODO Auto-generated constructor stub
 		if (needImage) {
-		    loadImage ("tank.jpeg");
+		    loadImage ("tank.png");
 		}
 	}
 	void draw(Graphics g) {
@@ -49,6 +49,9 @@ public class Tank extends GameObject{
 	        }
 	        needImage = false;
 	    }
+	}
+	public Projectile getProjectile() {
+        return new Projectile(x+width/2, y+height/2, 10, 10);
 	}
 
 }

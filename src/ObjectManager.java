@@ -1,12 +1,16 @@
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class ObjectManager {
+public class ObjectManager implements ActionListener{
 
 	Tank tank;
 	Tank2 tank2;
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Projectile2> projectiles2 = new ArrayList<Projectile2>();
+	int tank1Score = 0;
+	int tank2Score = 0;
 	
 	public ObjectManager(Tank tank, Tank2 tank2) {
 		this.tank=tank;
@@ -62,5 +66,34 @@ public class ObjectManager {
 			}
 			projectile2length--;
 		}
+	}
+	
+	void checkCollision() {
+		for (int i = 0; i < projectiles2.size(); i++) {
+			if (tank.collisionBox.intersects(projectiles2.get(i).collisionBox)) {
+				tank2Score++;
+				tank.isActive = false;
+				projectiles2.get(i).isActive = false;
+			}
+		}
+		for (int j = 0; j < projectiles.size(); j++) {
+			tank1Score++;
+			if (tank2.collisionBox.intersects(projectiles.get(j).collisionBox)) {
+				projectiles.get(j).isActive = false;
+				tank2.isActive = false;
+			}
+		}
+	}
+	public int getTank1Score() {
+		return tank1Score;
+	}
+	public int getTank2Score() {
+		return tank2Score;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

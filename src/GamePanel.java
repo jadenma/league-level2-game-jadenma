@@ -3,7 +3,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -18,6 +20,14 @@ public class GamePanel extends JPanel implements KeyListener {
     Tank tank = new Tank(175, 225, 50, 50);
     Tank2 tank2 = new Tank2(575, 225, 50, 50);
     ObjectManager objectmanager = new ObjectManager(tank, tank2);
+    public static BufferedImage image;
+    public static boolean needImage = true;
+    public static boolean gotImage = false;	
+    public GamePanel() {
+	    if (needImage) {
+	        loadImage ("field.jpeg");
+	    }
+    }
 	
 	@Override
 	public void paintComponent(Graphics g){
@@ -34,10 +44,16 @@ public class GamePanel extends JPanel implements KeyListener {
 	}
 	void updateGameState() {
 		objectmanager.update();
+		if (objectmanager.tank.isActive == false) {
+			currentState = END;
+		}
+		if (objectmanager.tank2.isActive == false) {
+			currentState = END;
+		}
 	}
 	void drawMenuState(Graphics g) {
 		g.setColor(Color.BLUE);
-		g.fillRect(0, 0, Main.HEIGHT, Main.LENGTH);
+		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 		g.setFont(titleFont);
 		g.setColor(Color.YELLOW);
 		g.drawString("TANKS GAME", 225, 125);
@@ -46,18 +62,30 @@ public class GamePanel extends JPanel implements KeyListener {
 		g.drawString("Press SPACE for instructions", 245, 344);
 	}
 	void drawGameState(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, Main.HEIGHT, Main.LENGTH);
+		if (gotImage) {
+			g.drawImage(image, 0, 0, Main.WIDTH, Main.HEIGHT, null);
+		} else {
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
+		}
 		g.setColor(Color.WHITE);
 		g.drawLine(400, 0, 400, 500);
 		objectmanager.draw(g);
 	}
 	void drawEndState(Graphics g)  {
 		g.setColor(Color.RED);
-		g.fillRect(0, 0, Main.HEIGHT, Main.LENGTH);
+		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 		g.setFont(titleFont);
 		g.setColor(Color.BLACK);
-		g.drawString("Player _ wins!!", 225, 150);
+		if (objectmanager.getTank1Score() == 1) {
+			g.drawString("Player 1 wins!!", 225, 150);
+		}
+		if (objectmanager.getTank2Score()==1) {
+			g.drawString("Player 2 wins!!", 225, 150);
+		}
+		else {
+			g.drawString("Nobody Wins!!", 225, 150);
+		}
 		g.setFont(subtitleFont);
 		g.drawString("Press ENTER to play again", 243, 325);
 	}
@@ -73,7 +101,7 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 		if (currentState==MENU) {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a rocket using either the arrow keys or wasd, and they try to kill the other player's tank by shooting it down while dodging their shots. You cannot cross the center line");
+					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a rocket using either the arrow keys or wasd, and they try to kill the opposing player's tank by shooting it down while dodging the opposing player's shots. The button to shoot is either shift or SPACE, and you cannot cross the center line");
 			}
 		}
 		if (currentState==GAME) {
@@ -127,12 +155,12 @@ public class GamePanel extends JPanel implements KeyListener {
 				tank.right();
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				objectmanager.addProjectile(tank.getProjectile());
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_0) {
-				
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				objectmanager.addProjectile2(tank2.getProjectile2());
 			}
 		}
 		repaint();
@@ -149,6 +177,16 @@ public class GamePanel extends JPanel implements KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
-
+	void loadImage(String imageFile) {
+	    if (needImage) {
+	        try {
+	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+		    gotImage = true;
+	        } catch (Exception e) {
+	            
+	        }
+	        needImage = false;
+	    }
+	}
 	
 }

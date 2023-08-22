@@ -50,4 +50,7 @@ public class Tank2 extends GameObject{
 	        needImage = false;
 	    }
 	}
+	public Projectile2 getProjectile2() {
+        return new Projectile2(x+width/2, y+height/2, 10, 10);
+	}
 }
