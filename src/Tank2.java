@@ -26,6 +26,7 @@ public class Tank2 extends GameObject{
 			g.setColor(Color.RED);
 			g.fillRect(x, y, width, height);
 		}
+		update();
 	}
 	public void up() {
         y-=speed;

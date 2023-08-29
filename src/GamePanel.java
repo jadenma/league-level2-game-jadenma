@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -8,18 +10,19 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	final int MENU = 0;
     final int GAME = 1;
     final int END = 2;
 	int currentState = MENU;
-	
+	Timer timer = new Timer(1000/30, this);
 	Font titleFont = new Font("Arial", Font.PLAIN, 48);
     Font subtitleFont = new Font("Arial", Font.PLAIN, 24);
     Tank tank = new Tank(175, 225, 50, 50);
     Tank2 tank2 = new Tank2(575, 225, 50, 50);
-    ObjectManager objectmanager = new ObjectManager(tank, tank2);
+    ObjectManager objectManager = new ObjectManager(tank, tank2);
     public static BufferedImage image;
     public static boolean needImage = true;
     public static boolean gotImage = false;	
@@ -36,18 +39,19 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 		else if(currentState == GAME) {
 		    drawGameState(g);
+		    updateGameState();
 		}
 		else if(currentState == END) {
 		    drawEndState(g);
 		}
-		System.out.println(currentState);
 	}
 	void updateGameState() {
-		objectmanager.update();
-		if (objectmanager.tank.isActive == false) {
+		objectManager.update();
+		
+		if (objectManager.tank.isActive == false) {
 			currentState = END;
 		}
-		if (objectmanager.tank2.isActive == false) {
+		if (objectManager.tank2.isActive == false) {
 			currentState = END;
 		}
 	}
@@ -70,17 +74,18 @@ public class GamePanel extends JPanel implements KeyListener {
 		}
 		g.setColor(Color.WHITE);
 		g.drawLine(400, 0, 400, 500);
-		objectmanager.draw(g);
+		objectManager.draw(g);
+		g.setColor(Color.BLACK);
 	}
 	void drawEndState(Graphics g)  {
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 		g.setFont(titleFont);
 		g.setColor(Color.BLACK);
-		if (objectmanager.getTank1Score() == 1) {
+		if (objectManager.tank2.isActive==false) {
 			g.drawString("Player 1 wins!!", 225, 150);
 		}
-		if (objectmanager.getTank2Score()==1) {
+		else if (objectManager.tank.isActive==false) {
 			g.drawString("Player 2 wins!!", 225, 150);
 		}
 		else {
@@ -97,14 +102,26 @@ public class GamePanel extends JPanel implements KeyListener {
 			currentState++;
 			if (currentState==3) {
 				currentState=MENU;
+				objectManager = new ObjectManager(tank, tank2);
+				objectManager.tank.isActive=true;
+				objectManager.tank2.isActive=true;
+	    		objectManager.tank = new Tank(175, 225, 50, 50);
+	    		objectManager.tank2 = new Tank2(575, 225, 50, 50);
+	    		Main game = new Main();
+	    		game.setup();
 			}
+
 		}
 		if (currentState==MENU) {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a rocket using either the arrow keys or wasd, and they try to kill the opposing player's tank by shooting it down while dodging the opposing player's shots. The button to shoot is either shift or SPACE, and you cannot cross the center line");
+					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a rocket using either the arrow keys or wasd, and they try to kill the opposing player's tank by shooting it down while dodging the opposing player's shots.");
+					JOptionPane.showMessageDialog(null, "The button to shoot is either shift or SPACE, and you cannot cross the center line.");
 			}
 		}
 		if (currentState==GAME) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				timer.start();
+			}
 			if (e.getKeyCode()==KeyEvent.VK_UP) {
 				if (tank2.y<0) {
 					tank2.y=0;
@@ -113,7 +130,6 @@ public class GamePanel extends JPanel implements KeyListener {
 			}
 			if (e.getKeyCode()==KeyEvent.VK_DOWN) {
 				if (tank2.y>450) {
-					System.out.println("out");
 					tank2.y=450;
 				}
 				tank2.down();
@@ -156,14 +172,14 @@ public class GamePanel extends JPanel implements KeyListener {
 			}
 			
 			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				objectmanager.addProjectile(tank.getProjectile());
+				objectManager.addProjectile(tank.getProjectile());
 			}
 			
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				objectmanager.addProjectile2(tank2.getProjectile2());
+				objectManager.addProjectile2(tank2.getProjectile2());
 			}
 		}
-		repaint();
+		
 	}
 
 	@Override
@@ -187,6 +203,12 @@ public class GamePanel extends JPanel implements KeyListener {
 	        }
 	        needImage = false;
 	    }
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		repaint();
 	}
 	
 }

@@ -9,8 +9,6 @@ public class ObjectManager implements ActionListener{
 	Tank2 tank2;
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Projectile2> projectiles2 = new ArrayList<Projectile2>();
-	int tank1Score = 0;
-	int tank2Score = 0;
 	
 	public ObjectManager(Tank tank, Tank2 tank2) {
 		this.tank=tank;
@@ -28,7 +26,7 @@ public class ObjectManager implements ActionListener{
 	void update() {
 		for (Projectile eachProjectile : projectiles) {
 			eachProjectile.update();
-			if (eachProjectile.x>Main.HEIGHT) {
+			if (eachProjectile.x>Main.WIDTH) {
 				eachProjectile.isActive = false;
 			}
 		}
@@ -38,6 +36,8 @@ public class ObjectManager implements ActionListener{
 				eachProjectile2.isActive = false;
 			}
 		}
+		checkCollision();
+		purgeObjects();
 		
 	}
 	void draw(Graphics g) {
@@ -71,24 +71,16 @@ public class ObjectManager implements ActionListener{
 	void checkCollision() {
 		for (int i = 0; i < projectiles2.size(); i++) {
 			if (tank.collisionBox.intersects(projectiles2.get(i).collisionBox)) {
-				tank2Score++;
 				tank.isActive = false;
 				projectiles2.get(i).isActive = false;
 			}
 		}
-		for (int j = 0; j < projectiles.size(); j++) {
-			tank1Score++;
-			if (tank2.collisionBox.intersects(projectiles.get(j).collisionBox)) {
-				projectiles.get(j).isActive = false;
+		for (int i = 0; i < projectiles.size(); i++) {
+			if (tank2.collisionBox.intersects(projectiles.get(i).collisionBox)) {
 				tank2.isActive = false;
+				projectiles.get(i).isActive = false;
 			}
 		}
-	}
-	public int getTank1Score() {
-		return tank1Score;
-	}
-	public int getTank2Score() {
-		return tank2Score;
 	}
 
 	@Override
