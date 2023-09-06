@@ -115,7 +115,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (currentState==MENU) {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
 					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a rocket using either the arrow keys or wasd, and they try to kill the opposing player's tank by shooting it down while dodging the opposing player's shots.");
-					JOptionPane.showMessageDialog(null, "The button to shoot is either shift or SPACE, and you cannot cross the center line.");
+					JOptionPane.showMessageDialog(null, "The button to shoot is either Q or /, and you cannot cross the center line.");
 			}
 		}
 		if (currentState==GAME) {
@@ -171,11 +171,11 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				tank.right();
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			if (e.getKeyCode() == KeyEvent.VK_Q) {
 				objectManager.addProjectile(tank.getProjectile());
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			if (e.getKeyCode() == KeyEvent.VK_SLASH) {
 				objectManager.addProjectile2(tank2.getProjectile2());
 			}
 		}
