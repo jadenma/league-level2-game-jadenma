@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 		g.setFont(titleFont);
 		g.setColor(Color.YELLOW);
-		g.drawString("TANKS GAME", 225, 125);
+		g.drawString("JTG", 360, 125);
 		g.setFont(subtitleFont);
 		g.drawString("Press ENTER to start", 275, 219);
 		g.drawString("Press SPACE for instructions", 245, 344);
@@ -123,51 +123,27 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				timer.start();
 			}
 			if (e.getKeyCode()==KeyEvent.VK_UP) {
-				if (tank2.y<0) {
-					tank2.y=0;
-				}
 				tank2.up();
 			}
 			if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-				if (tank2.y>450) {
-					tank2.y=450;
-				}
 				tank2.down();
 			}			
 			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-				if (tank2.x<400) {
-					tank2.x=400;
-				}
 				tank2.left();
 			}			
 			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-				if (tank2.x>750) {
-					tank2.x=750;
-				}
 				tank2.right();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_W) {
-					if (tank.y<0) {
-						tank.y=0;
-					}
 				tank.up();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_A) {
-				if (tank.x<0) {
-					tank.x=0;
-				}
 				tank.left();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_S) {
-				if (tank.y>450) {
-					tank.y=450;
-				}
 				tank.down();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_D) {
-				if (tank.x>350) {
-					tank.x=350;
-				}
 				tank.right();
 			}
 			
@@ -185,7 +161,18 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		if (e.getKeyCode()==KeyEvent.VK_UP || e.getKeyCode()==KeyEvent.VK_DOWN) {
+			tank2.ySpeed = 0;
+		}
+		if (e.getKeyCode()==KeyEvent.VK_LEFT || e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			tank2.xSpeed = 0;
+		}
+		if (e.getKeyCode()==KeyEvent.VK_W || e.getKeyCode()==KeyEvent.VK_S) {
+			tank.ySpeed = 0;
+		}
+		if (e.getKeyCode()==KeyEvent.VK_A || e.getKeyCode()==KeyEvent.VK_D) {
+			tank.xSpeed = 0;
+		}
 	}
 
 	@Override

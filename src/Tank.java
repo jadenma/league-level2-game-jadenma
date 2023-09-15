@@ -28,17 +28,34 @@ public class Tank extends GameObject{
 		}
 		update();
 	}
+	void update() {
+		if (x+xSpeed<=0) {
+			x=0;
+		}
+		else if (x-xSpeed>=350) {
+			x=350;
+		}
+		else if (y+ySpeed<=0) {
+			y=0;
+		}
+		else if (y-ySpeed>=420) {
+			y=420;
+		}
+		else {
+			super.update();
+		}
+	}
 	public void up() {
-        y-=speed;
+        ySpeed=-speed;
     }
 	public void down() {
-        y+=speed;
+        ySpeed=speed;
     }
 	public void left() {
-        x-=speed;
+        xSpeed=-speed;
     }
 	public void right() {
-        x+=speed;
+        xSpeed=speed;
     }
 	void loadImage(String imageFile) {
 	    if (needImage) {

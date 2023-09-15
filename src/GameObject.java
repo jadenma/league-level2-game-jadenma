@@ -9,6 +9,8 @@ public class GameObject {
 	int speed=0;
 	boolean isActive = true;
 	Rectangle collisionBox;
+	int xSpeed;
+	int ySpeed;
 	
 	public GameObject(int x, int y, int width, int height) {
 		this.x = x;
@@ -21,6 +23,8 @@ public class GameObject {
 	
 	void update() {
 		collisionBox.setBounds(x, y, width, height);
+		x+=xSpeed;
+		y+=ySpeed;
 	}
 	
 }
