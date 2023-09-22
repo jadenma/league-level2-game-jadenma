@@ -32,14 +32,14 @@ public class Tank extends GameObject{
 		if (x+xSpeed<=0) {
 			x=0;
 		}
-		else if (x-xSpeed>=350) {
+		else if (x+xSpeed>=350) {
 			x=350;
 		}
 		else if (y+ySpeed<=0) {
 			y=0;
 		}
-		else if (y-ySpeed>=420) {
-			y=420;
+		else if (y+ySpeed>=425) {
+			y=425;
 		}
 		else {
 			super.update();

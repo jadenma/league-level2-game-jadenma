@@ -29,19 +29,21 @@ public class Tank2 extends GameObject{
 		update();
 	}
 	void update() {
-			if (x<405) {
-				x=405;
-			}
-			if (x>745) {
-				x=745;
-			}
-			if (y<5) {
-				y=5;
-			}
-			if (y>420) {
-				y=420;
-			}
+		if (x+xSpeed<=400) {
+			x=400;
+		}
+		else if (x+xSpeed>=750) {
+			x=750;
+		}
+		else if (y+ySpeed<=0) {
+			y=0;
+		}
+		else if (y+ySpeed>=425) {
+			y=425;
+		}
+		else {
 			super.update();
+		}
 	}
 	public void up() {
         ySpeed=-speed;

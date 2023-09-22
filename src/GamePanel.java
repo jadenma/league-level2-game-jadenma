@@ -24,11 +24,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     Tank2 tank2 = new Tank2(575, 225, 50, 50);
     ObjectManager objectManager = new ObjectManager(tank, tank2);
     public static BufferedImage image;
+    public static BufferedImage image2;
     public static boolean needImage = true;
     public static boolean gotImage = false;	
+    public static boolean needImage2 = true;
+    public static boolean gotImage2 = false;	
     public GamePanel() {
 	    if (needImage) {
 	        loadImage ("field.jpeg");
+	    }
+	    if (needImage2) {
+	        loadImage2 ("heart2.png");
 	    }
     }
 	
@@ -72,10 +78,43 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 		}
+		if (gotImage && objectManager.getTank1Lives()>0) {
+			if (objectManager.getTank1Lives()==1) {
+				g.drawImage(image2, 77, 420, 40, 40, null);
+			}
+			if (objectManager.getTank1Lives()==2) {
+				g.drawImage(image2, 77, 420, 40, 40, null);
+				g.drawImage(image2, 130, 420, 40, 40, null);
+			}
+			if (objectManager.getTank1Lives()==3) {
+				g.drawImage(image2, 77, 420, 40, 40, null);
+				g.drawImage(image2, 130, 420, 40, 40, null);
+				g.drawImage(image2, 183, 420, 40, 40, null);
+			}
+		}
+		if (gotImage && objectManager.getTank2Lives()>0) {
+			if (objectManager.getTank2Lives()==1) {
+				g.drawImage(image2, 477, 420, 40, 40, null);
+			}
+			if (objectManager.getTank2Lives()==2) {
+				g.drawImage(image2, 477, 420, 40, 40, null);
+				g.drawImage(image2, 530, 420, 40, 40, null);
+			}
+			if (objectManager.getTank2Lives()==3) {
+				g.drawImage(image2, 477, 420, 40, 40, null);
+				g.drawImage(image2, 530, 420, 40, 40, null);
+				g.drawImage(image2, 583, 420, 40, 40, null);
+			}
+		}
 		g.setColor(Color.WHITE);
 		g.drawLine(400, 0, 400, 500);
 		objectManager.draw(g);
 		g.setColor(Color.BLACK);
+		g.setFont(subtitleFont);
+		g.drawString("Lives:", 15, 450);
+		g.drawString("Lives:", 415, 450);
+		g.drawString("Ammo: " + objectManager.getTank1Ammo(), 15, 30);
+		g.drawString("Ammo: " + objectManager.getTank2Ammo(), 415, 30);
 	}
 	void drawEndState(Graphics g)  {
 		g.setColor(Color.RED);
@@ -114,8 +153,10 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		}
 		if (currentState==MENU) {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a rocket using either the arrow keys or wasd, and they try to kill the opposing player's tank by shooting it down while dodging the opposing player's shots.");
-					JOptionPane.showMessageDialog(null, "The button to shoot is either Q or /, and you cannot cross the center line.");
+					JOptionPane.showMessageDialog(null, "This is a 2-player game where each player controls a tank and tries to kill the opposing player's tank by shooting it down while dodging the opposing player's shots.");
+					JOptionPane.showMessageDialog(null, "The keys for player 1 to move are the wasd keys and the key to shoot is Q");
+					JOptionPane.showMessageDialog(null, "The keys for player 2 to move are the arrow keys and the key to shoot is /");
+					JOptionPane.showMessageDialog(null, "Each player has 3 lives, and each player starts with 5 ammo - 1 ammo recharges every second.");
 			}
 		}
 		if (currentState==GAME) {
@@ -189,6 +230,17 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	            
 	        }
 	        needImage = false;
+	    }
+	}
+	void loadImage2(String imageFile) {
+	    if (needImage2) {
+	        try {
+	            image2 = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+		    gotImage2 = true;
+	        } catch (Exception e) {
+	            
+	        }
+	        needImage2 = false;
 	    }
 	}
 
