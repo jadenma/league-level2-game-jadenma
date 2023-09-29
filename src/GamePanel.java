@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     final int END = 2;
 	int currentState = MENU;
 	Timer timer = new Timer(1000/30, this);
+	Timer ammoTimer = new Timer(1000, this);
 	Font titleFont = new Font("Arial", Font.PLAIN, 48);
     Font subtitleFont = new Font("Arial", Font.PLAIN, 24);
     Tank tank = new Tank(175, 225, 50, 50);
@@ -128,7 +129,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			g.drawString("Player 2 wins!!", 225, 150);
 		}
 		else {
-			g.drawString("Nobody Wins!!", 225, 150);
+			g.drawString("Draw!!", 330, 150);
 		}
 		g.setFont(subtitleFont);
 		g.drawString("Press ENTER to play again", 243, 325);
@@ -162,6 +163,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 		if (currentState==GAME) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				timer.start();
+				ammoTimer.start();
 			}
 			if (e.getKeyCode()==KeyEvent.VK_UP) {
 				tank2.up();
@@ -188,12 +190,14 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 				tank.right();
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_Q) {
+			if (e.getKeyCode() == KeyEvent.VK_Q && objectManager.tank1Ammo >= 1) {
 				objectManager.addProjectile(tank.getProjectile());
+				objectManager.tank1Ammo--;
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_SLASH) {
+			if (e.getKeyCode() == KeyEvent.VK_SLASH && objectManager.tank2Ammo >= 1) {
 				objectManager.addProjectile2(tank2.getProjectile2());
+				objectManager.tank2Ammo--;
 			}
 		}
 		
@@ -247,6 +251,12 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if (e.getSource()==ammoTimer && objectManager.getTank1Ammo()<5) {
+			objectManager.tank1Ammo++;
+		}
+		if (e.getSource()==ammoTimer && objectManager.getTank2Ammo()<5) {
+			objectManager.tank2Ammo++;
+		}
 		repaint();
 	}
 	
